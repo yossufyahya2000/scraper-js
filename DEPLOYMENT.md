@@ -20,8 +20,8 @@ This API is optimized for Vercel serverless deployment with the following struct
 After deployment, your API will be available at:
 
 - **GET** `/` - API documentation page
-- **GET** `/api/health` or `/health` - Health check
-- **POST** `/api/scrape` or `/scrape` - Web scraping endpoint
+- **GET** `/api/health` - Health check
+- **POST** `/api/scrape` - Web scraping endpoint
 
 ### Deployment Steps
 
@@ -87,10 +87,10 @@ Or test manually with curl:
 
 ```bash
 # Health check
-curl https://your-domain.vercel.app/health
+curl https://your-domain.vercel.app/api/health
 
 # Scrape a website
-curl -X POST https://your-domain.vercel.app/scrape \
+curl -X POST https://your-domain.vercel.app/api/scrape \
   -H "Content-Type: application/json" \
   -d '{"url": "https://example.com"}'
 ```

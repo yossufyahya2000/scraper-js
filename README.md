@@ -13,7 +13,7 @@ A powerful Express.js REST API for web scraping with Playwright, designed for se
 
 ## API Endpoints
 
-### POST /api/scrape (or /scrape)
+### POST /api/scrape
 
 Scrapes a website and returns structured data.
 
@@ -47,7 +47,7 @@ Scrapes a website and returns structured data.
 }
 ```
 
-### GET /api/health (or /health)
+### GET /api/health
 
 Health check endpoint.
 
