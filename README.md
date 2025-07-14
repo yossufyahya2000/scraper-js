@@ -13,7 +13,7 @@ A powerful Express.js REST API for web scraping with Playwright, designed for se
 
 ## API Endpoints
 
-### POST /scrape
+### POST /api/scrape (or /scrape)
 
 Scrapes a website and returns structured data.
 
@@ -47,7 +47,7 @@ Scrapes a website and returns structured data.
 }
 ```
 
-### GET /health
+### GET /api/health (or /health)
 
 Health check endpoint.
 
@@ -88,14 +88,14 @@ The API will be available at `http://localhost:3000`
 
 ### Using curl
 ```bash
-curl -X POST http://localhost:3000/scrape \
+curl -X POST https://your-domain.vercel.app/api/scrape \
   -H "Content-Type: application/json" \
   -d '{"url": "https://example.com"}'
 ```
 
 ### Using JavaScript fetch
 ```javascript
-const response = await fetch('http://localhost:3000/scrape', {
+const response = await fetch('https://your-domain.vercel.app/api/scrape', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
