@@ -94,9 +94,8 @@ module.exports = async (req, res) => {
     // Launch browser with @sparticuz/chromium for serverless compatibility
     browser = await playwrightChromium.launch({
       args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
       executablePath: executablePath,
-      headless: chromium.headless,
+      headless: true, // Force headless mode for serverless
       // Additional args for better Vercel compatibility
       ignoreDefaultArgs: ['--disable-extensions']
     });
