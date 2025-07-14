@@ -1,0 +1,34 @@
+{
+  "name": "scraper-js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "web-scraping",
+    "playwright",
+    "express",
+    "api",
+    "serverless"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "description": "Express.js REST API for web scraping with Playwright",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "playwright": "^1.54.1",
+    "turndown": "^7.2.0"
+  },
+  "devDependencies": {
+    "axios": "^1.10.0"
+  }
+}
