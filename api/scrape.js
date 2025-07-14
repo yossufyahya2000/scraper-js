@@ -1,4 +1,5 @@
-const playwright = require('playwright-aws-lambda');
+const chromium = require('@sparticuz/chromium');
+const { chromium: playwrightChromium } = require('playwright-core');
 const TurndownService = require('turndown');
 
 // Initialize Turndown service for HTML to Markdown conversion
@@ -80,10 +81,10 @@ module.exports = async (req, res) => {
   let page = null;
 
   try {
-    // Launch browser with playwright-aws-lambda for serverless compatibility
-    browser = await playwright.launchChromium({
-      headless: true,
+    // Launch browser with @sparticuz/chromium for serverless compatibility
+    browser = await playwrightChromium.launch({
       args: [
+        ...chromium.args,
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
@@ -93,7 +94,10 @@ module.exports = async (req, res) => {
         '--disable-gpu',
         '--disable-web-security',
         '--disable-features=VizDisplayCompositor'
-      ]
+      ],
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless
     });
 
     const context = await browser.newContext({
