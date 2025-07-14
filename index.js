@@ -1,5 +1,5 @@
 const express = require('express');
-const chromiumPkg = require('@sparticuz/chromium');
+const chromiumPkg = require('@sparticuz/chromium-min');
 const { chromium: playwrightChromium } = require('playwright-core');
 const { chromium } = require('playwright'); // Fallback for local development
 const TurndownService = require('turndown');
@@ -60,13 +60,22 @@ app.post('/scrape', validateUrl, async (req, res) => {
   let page = null;
 
   try {
-    // Launch browser - use @sparticuz/chromium for serverless, regular chromium for local
+    // Launch browser - use @sparticuz/chromium-min for serverless, regular chromium for local
     if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
       browser = await playwrightChromium.launch({
-        args: chromiumPkg.args,
-        defaultViewport: chromiumPkg.defaultViewport,
+        args: [
+          ...chromiumPkg.args,
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--no-first-run',
+          '--no-zygote',
+          '--single-process',
+          '--disable-gpu'
+        ],
         executablePath: await chromiumPkg.executablePath(),
-        headless: chromiumPkg.headless
+        headless: true
       });
     } else {
       browser = await chromium.launch({

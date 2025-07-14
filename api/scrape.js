@@ -1,4 +1,4 @@
-const chromium = require('@sparticuz/chromium');
+const chromium = require('@sparticuz/chromium-min');
 const { chromium: playwrightChromium } = require('playwright-core');
 const TurndownService = require('turndown');
 
@@ -81,23 +81,26 @@ module.exports = async (req, res) => {
   let page = null;
 
   try {
-    // Get executable path - handle both old (function) and new (property) API
-    let executablePath;
-    if (typeof chromium.executablePath === 'function') {
-      executablePath = await chromium.executablePath();
-    } else {
-      executablePath = chromium.executablePath;
-    }
+    // Get executable path for chromium-min
+    const executablePath = await chromium.executablePath();
 
     console.log('Launching browser with executablePath:', executablePath);
 
-    // Launch browser with @sparticuz/chromium for serverless compatibility
+    // Launch browser with @sparticuz/chromium-min for serverless compatibility
     browser = await playwrightChromium.launch({
-      args: chromium.args,
+      args: [
+        ...chromium.args,
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process',
+        '--disable-gpu'
+      ],
       executablePath: executablePath,
-      headless: true, // Force headless mode for serverless
-      // Additional args for better Vercel compatibility
-      ignoreDefaultArgs: ['--disable-extensions']
+      headless: true
     });
 
     const context = await browser.newContext({
