@@ -81,12 +81,24 @@ module.exports = async (req, res) => {
   let page = null;
 
   try {
+    // Get executable path - handle both old (function) and new (property) API
+    let executablePath;
+    if (typeof chromium.executablePath === 'function') {
+      executablePath = await chromium.executablePath();
+    } else {
+      executablePath = chromium.executablePath;
+    }
+
+    console.log('Launching browser with executablePath:', executablePath);
+
     // Launch browser with @sparticuz/chromium for serverless compatibility
     browser = await playwrightChromium.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless
+      executablePath: executablePath,
+      headless: chromium.headless,
+      // Additional args for better Vercel compatibility
+      ignoreDefaultArgs: ['--disable-extensions']
     });
 
     const context = await browser.newContext({
