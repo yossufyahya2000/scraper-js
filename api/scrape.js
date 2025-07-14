@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+const playwright = require('playwright-aws-lambda');
 const TurndownService = require('turndown');
 
 // Initialize Turndown service for HTML to Markdown conversion
@@ -80,10 +80,9 @@ module.exports = async (req, res) => {
   let page = null;
 
   try {
-    // Launch browser with optimized settings for serverless
-    browser = await chromium.launch({
+    // Launch browser with playwright-aws-lambda for serverless compatibility
+    browser = await playwright.launchChromium({
       headless: true,
-      timeout: 60000,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',

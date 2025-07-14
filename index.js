@@ -1,5 +1,6 @@
 const express = require('express');
-const { chromium } = require('playwright');
+const playwright = require('playwright-aws-lambda');
+const { chromium } = require('playwright'); // Fallback for local development
 const TurndownService = require('turndown');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -58,22 +59,39 @@ app.post('/scrape', validateUrl, async (req, res) => {
   let page = null;
 
   try {
-    // Launch browser with optimized settings for serverless
-    browser = await chromium.launch({
-      headless: true,
-      timeout: 60000,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--disable-gpu',
-        '--disable-web-security',
-        '--disable-features=VizDisplayCompositor'
-      ]
-    });
+    // Launch browser - use playwright-aws-lambda for serverless, chromium for local
+    if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+      browser = await playwright.launchChromium({
+        headless: true,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--no-first-run',
+          '--no-zygote',
+          '--disable-gpu',
+          '--disable-web-security',
+          '--disable-features=VizDisplayCompositor'
+        ]
+      });
+    } else {
+      browser = await chromium.launch({
+        headless: true,
+        timeout: 60000,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--no-first-run',
+          '--no-zygote',
+          '--disable-gpu',
+          '--disable-web-security',
+          '--disable-features=VizDisplayCompositor'
+        ]
+      });
+    }
 
     const context = await browser.newContext({
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',

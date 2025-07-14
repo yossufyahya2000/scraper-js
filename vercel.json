@@ -1,6 +1,7 @@
 {
-  "env": {
-    "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "1"
-  },
-  "installCommand": "npm install && npx playwright install chromium"
+  "functions": {
+    "api/scrape.js": {
+      "maxDuration": 30
+    }
+  }
 }
