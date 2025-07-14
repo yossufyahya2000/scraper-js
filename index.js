@@ -63,18 +63,7 @@ app.post('/scrape', validateUrl, async (req, res) => {
     // Launch browser - use @sparticuz/chromium for serverless, regular chromium for local
     if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
       browser = await playwrightChromium.launch({
-        args: [
-          ...chromiumPkg.args,
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-accelerated-2d-canvas',
-          '--no-first-run',
-          '--no-zygote',
-          '--disable-gpu',
-          '--disable-web-security',
-          '--disable-features=VizDisplayCompositor'
-        ],
+        args: chromiumPkg.args,
         defaultViewport: chromiumPkg.defaultViewport,
         executablePath: await chromiumPkg.executablePath(),
         headless: chromiumPkg.headless
