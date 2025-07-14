@@ -1,6 +1,5 @@
 const { chromium } = require('playwright');
 const TurndownService = require('turndown');
-const { body, validationResult } = require('express-validator');
 
 // Initialize Turndown service for HTML to Markdown conversion
 const turndownService = new TurndownService({
